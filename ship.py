@@ -39,8 +39,8 @@ class Ship:
         # Right: checks the ship is moving right and that the current position is less than the screen value on the right
         if self.moving_right and self.rect.right < self.screen_rect.right:
             self.x += self.settings.ship_speed
-        # Left: checks the ship is moving left and is less than 0 - the starting point of the x axis
-        if self.moving_left and self.rect.left < 0:
+        # Left: checks the ship is moving left and is greater than 0 - the starting point of the x axis
+        if self.moving_left and self.rect.left > 0:
             self.x -= self.settings.ship_speed
 
         # update rect object from self.x
