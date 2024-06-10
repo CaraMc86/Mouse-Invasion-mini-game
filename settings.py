@@ -10,3 +10,9 @@ class Settings:
         # Ship settings
         # Set the ship to an initial speed of 1.5 pixels, rather than 1 on each pass of hte loop
         self.ship_speed = 1.5
+        # Bullet settings
+        # The bullet speed setting allows us to control the bullet speed as the game progresses
+        self.bullet_speed = 2.0
+        self.bullet_width = 3
+        self.bullet_height = 15
+        self.bullet_colour = (255, 175, 204)

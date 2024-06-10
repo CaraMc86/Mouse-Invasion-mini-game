@@ -48,12 +48,16 @@ class AlienInvasion:
             elif event.type == pygame.KEYUP:
                 self.check_keyup_events(event)
 
+    # Created new helper methods to split away the keyup/down logic from the _check_events helper method.
+    # Then add keydown logic to quit pressing the key q (K_q)
     def _check_keydown_events(self, event):
         """Respond to keypresses"""
         if event.key == pygame.K_RIGHT:
             self.ship.moving_right = True
         elif event.key == pygame.K_LEFT:
             self.ship.moving_left = True
+        elif event.key == pygame.K_q:
+            sys.exit()
 
     def _check_keyup_events(self, event):
         if event.key == pygame.K_RIGHT:
