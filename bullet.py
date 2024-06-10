@@ -13,7 +13,7 @@ class Bullet(Sprite):
         # Set attributes for the screen, settings and bullet colour
         self.screen = ai_game.screen
         self.settings = ai_game.settings
-        self.colour = ai_game.bullet_colour
+        self.colour = self.settings.bullet_colour
 
         # Create a bullet at rect (0, 0) and then set correct position
         # We are not importing the bullet from an image, so we create using the inbuilt pygame.Rect() class

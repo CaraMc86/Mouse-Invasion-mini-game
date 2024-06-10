@@ -2,6 +2,7 @@ import sys
 import pygame
 from settings import Settings
 from ship import Ship
+from bullet import Bullet
 class AlienInvasion:
     """Overall Class to manage game assets and behaviour"""
     def __init__(self):
@@ -20,14 +21,20 @@ class AlienInvasion:
         # Instance of ship created from imported Ship module
         # This passes the instance of AlienInvasion (ai) as self to the ship class.
         self.ship = Ship(self)
+        # Creating a group to hold the bullets in __init__()
+        self.bullets = pygame.sprite.Group()
 
     def run_game(self):
         """Start the main loop for the game"""
         while True:
             self._check_events()
-            #Calls the ship update method from ship.py on each pass of the loop
-            # This allows te key right to work
+            # Calls the ship update method from ship.py on each pass of the loop
+            # This allows the key right to work
             self.ship.update()
+            # update the position of hte bullets on each pass of the while loop
+            # When you call update() on a group - as initialized above - the group automatically
+            # calls update() for *each* sprite in the group
+            self.bullets.update()
             self._update_screen()
             # Use the clock to ensure the game runs at the same frame rate on all systems.
             # The argument 60 tells pygame to (try to) run the game loop 60 times per second.
@@ -44,29 +51,47 @@ class AlienInvasion:
             if event.type == pygame.QUIT:
                 sys.exit()
             elif event.type == pygame.KEYDOWN:
-                self.check_keydown_events(event)
+                self._check_keydown_events(event)
             elif event.type == pygame.KEYUP:
-                self.check_keyup_events(event)
+                self._check_keyup_events(event)
+            elif event.type == pygame.K_SPACE:
+                self._fire_bullet()
+
 
     # Created new helper methods to split away the keyup/down logic from the _check_events helper method.
     # Then add keydown logic to quit pressing the key q (K_q)
     def _check_keydown_events(self, event):
-        """Respond to keypresses"""
+        """Respond to key presses"""
         if event.key == pygame.K_RIGHT:
             self.ship.moving_right = True
         elif event.key == pygame.K_LEFT:
             self.ship.moving_left = True
         elif event.key == pygame.K_q:
             sys.exit()
+        # Calls the _fire_bullet method when spacebar is called.
+        elif event.key == pygame.K_SPACE:
+            self._fire_bullet()
 
     def _check_keyup_events(self, event):
         if event.key == pygame.K_RIGHT:
             self.ship.moving_right = False
         elif event.key == pygame.K_LEFT:
             self.ship.moving_left = False
+
+    def _fire_bullet(self):
+        """Create new bullet and add to the bullets group"""
+        # makes a new instance of Bullet and call it new_bullet
+        new_bullet = Bullet(self)
+        # add this bullet to the bullets group - initialised above
+        self.bullets.add(new_bullet)
+
     def _update_screen(self):
         # Redraw the screen during each pass through the loop
         self.screen.fill(self.settings.bg_colour)
+        # For loop to include drawing the bullet on each screen redraw
+        for bullet in self.bullets.sprites():
+            # For each pass of the loop, call the draw bullet method from bullet.py
+            bullet.draw_bullet()
         # draw the ship at its current location
         self.ship.blitme()
         # Make the most recently drawn screen visible
