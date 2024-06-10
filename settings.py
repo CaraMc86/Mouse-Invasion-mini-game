@@ -16,3 +16,6 @@ class Settings:
         self.bullet_width = 3
         self.bullet_height = 15
         self.bullet_colour = (255, 175, 204)
+        # Storing a number of bullets allowed in settings
+        # This will then be used in the main game
+        self.bullets_allowed = 3

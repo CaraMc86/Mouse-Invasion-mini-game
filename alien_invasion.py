@@ -34,7 +34,7 @@ class AlienInvasion:
             # update the position of hte bullets on each pass of the while loop
             # When you call update() on a group - as initialized above - the group automatically
             # calls update() for *each* sprite in the group
-            self.bullets.update()
+            self._update_bullet()
             self._update_screen()
             # Use the clock to ensure the game runs at the same frame rate on all systems.
             # The argument 60 tells pygame to (try to) run the game loop 60 times per second.
@@ -68,7 +68,7 @@ class AlienInvasion:
             self.ship.moving_left = True
         elif event.key == pygame.K_q:
             sys.exit()
-        # Calls the _fire_bullet method when spacebar is called.
+        # Calls the _fire_bullet method when space bar is called.
         elif event.key == pygame.K_SPACE:
             self._fire_bullet()
 
@@ -80,10 +80,24 @@ class AlienInvasion:
 
     def _fire_bullet(self):
         """Create new bullet and add to the bullets group"""
-        # makes a new instance of Bullet and call it new_bullet
-        new_bullet = Bullet(self)
-        # add this bullet to the bullets group - initialised above
-        self.bullets.add(new_bullet)
+        # conditional statement to check if anotehr bullet can be released
+        if len(self.bullets) < self.settings.bullets_allowed:
+            # makes a new instance of Bullet and call it new_bullet
+            new_bullet = Bullet(self)
+            # add this bullet to the bullets group - initialised above
+            self.bullets.add(new_bullet)
+
+    def _update_bullet(self):
+        """Update position of bullets & get rid of old bullets"""
+        self.bullets.update()
+
+        # Get rid of bullets that have dissapeared off-screen - to ensure no uneccessary memory is used as the bullets continue off screen.
+        # Pygame expects a list or group to remain the same length as log as the loop is running.
+        # We use the copy method to coop over a copy of this, meaning we can then delete items from the main group as we are always
+        # looping over a copy.
+        for bullet in self.bullets.copy():
+            if bullet.rect.bottom <= 0:
+                self.bullets.remove(bullet)
 
     def _update_screen(self):
         # Redraw the screen during each pass through the loop
