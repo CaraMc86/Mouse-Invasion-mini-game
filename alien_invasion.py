@@ -3,6 +3,7 @@ import pygame
 from settings import Settings
 from ship import Ship
 from bullet import Bullet
+from alien import Alien
 class AlienInvasion:
     """Overall Class to manage game assets and behaviour"""
     def __init__(self):
@@ -16,13 +17,17 @@ class AlienInvasion:
         # Create the game surface, where the game element is displayed.
         # The dimensions and background color are defined in the Settings module.
         self.screen = pygame.display.set_mode(
-            (self.settings.screen_with, self.settings.screen_height))
+            (self.settings.screen_width, self.settings.screen_height))
         pygame.display.set_caption('Alien Invasion')
         # Instance of ship created from imported Ship module
         # This passes the instance of AlienInvasion (ai) as self to the ship class.
         self.ship = Ship(self)
         # Creating a group to hold the bullets in __init__()
         self.bullets = pygame.sprite.Group()
+        # Creating group to hold the fleet of Aliens/Mice
+        self.aliens = pygame.sprite.Group()
+        # We then the create fleet method.
+        self._create_fleet()
 
     def run_game(self):
         """Start the main loop for the game"""
@@ -80,12 +85,13 @@ class AlienInvasion:
 
     def _fire_bullet(self):
         """Create new bullet and add to the bullets group"""
-        # conditional statement to check if anotehr bullet can be released
+        # conditional statement to check if another bullet can be released
         if len(self.bullets) < self.settings.bullets_allowed:
             # makes a new instance of Bullet and call it new_bullet
             new_bullet = Bullet(self)
             # add this bullet to the bullets group - initialised above
             self.bullets.add(new_bullet)
+
 
     def _update_bullet(self):
         """Update position of bullets & get rid of old bullets"""
@@ -99,6 +105,31 @@ class AlienInvasion:
             if bullet.rect.bottom <= 0:
                 self.bullets.remove(bullet)
 
+    def _create_fleet(self):
+        """Make a fleet of aliens from the instance"""
+        # Make one instance of an Alien and add it to the group initialised above until there is no more room left
+        # Make the gap between 1 mouse alien, 1 mouse alien long
+        alien = Alien(self)
+        alien_width = alien.rect.width
+
+        # variable to define the horizontal position of the next alien, defined by the width of 1 alien
+        # This refers to the horizontal position of the next alien we intend to place on screen
+        current_x = alien_width
+        # Begin the while loop to add aliens *while* there is room for them on the screen set by while current_x
+        # This is structured as LESS 2 aliens width to account for the new Alien and its gap.
+        # If we left this as self.screen., there could be a pixel less and the new alien wouldn't fit hence the margin.
+        while current_x < (self.settings.screen_width - 2 * alien_width):
+            # create a new alien instance adn assign to 'new_alien'
+            new_alien = Alien(self)
+            # new alien x position marker, is the current position of x
+            new_alien.x = current_x
+            # Position the new_alien_rec the same
+            new_alien.rect.x = current_x
+            # Add the alien to the new group of aliens
+            self.aliens.add(new_alien)
+            # Move the current_x variable along 2 aliens width to start the loop in the correct place
+            current_x += 2 * alien_width
+
     def _update_screen(self):
         # Redraw the screen during each pass through the loop
         self.screen.fill(self.settings.bg_colour)
@@ -108,6 +139,10 @@ class AlienInvasion:
             bullet.draw_bullet()
         # draw the ship at its current location
         self.ship.blitme()
+        # To mke the alien appear we need to call the groups draw() function
+        # When you call draw on a group, Pygame draws each element based on
+        # its position defined by its rect attribute.
+        self.aliens.draw(self.screen)
         # Make the most recently drawn screen visible
         pygame.display.flip()
 
