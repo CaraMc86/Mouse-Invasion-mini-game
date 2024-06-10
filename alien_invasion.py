@@ -110,25 +110,32 @@ class AlienInvasion:
         # Make one instance of an Alien and add it to the group initialised above until there is no more room left
         # Make the gap between 1 mouse alien, 1 mouse alien long
         alien = Alien(self)
-        alien_width = alien.rect.width
+        # We need to know the Aliens height to place the rows, so we use rect's size attribute to grab the height and width of the alien
+        alien_width, alien_height = alien.rect.size
 
-        # variable to define the horizontal position of the next alien, defined by the width of 1 alien
-        # This refers to the horizontal position of the next alien we intend to place on screen
-        current_x = alien_width
-        # Begin the while loop to add aliens *while* there is room for them on the screen set by while current_x
-        # This is structured as LESS 2 aliens width to account for the new Alien and its gap.
-        # If we left this as self.screen., there could be a pixel less and the new alien wouldn't fit hence the margin.
-        while current_x < (self.settings.screen_width - 2 * alien_width):
-            # create a new alien instance adn assign to 'new_alien'
-            new_alien = Alien(self)
-            # new alien x position marker, is the current position of x
-            new_alien.x = current_x
-            # Position the new_alien_rec the same
-            new_alien.rect.x = current_x
-            # Add the alien to the new group of aliens
-            self.aliens.add(new_alien)
-            # Move the current_x variable along 2 aliens width to start the loop in the correct place
-            current_x += 2 * alien_width
+        # Next set the initial height and width for placement of the first alien
+        current_x, current_y = alien_width, alien_height
+        # Outer while loop, controlling how many rows can be place - we have opted for 3.
+        # This will continue to allow the inner while loop to add rows as long as it is the screen height less 3 * the aliens' height.
+        while current_y < (self.settings.screen_height - 3 * alien_height):
+        # Inner while loop ensuring the loop runs whilst there are the screen width less 2 x alien width
+        # This will allow the last alien + gap to be present when adding aliens in a row
+            while current_x < (self.settings.screen_width - 2 * alien_width):
+                # Call the _create_alien method passing both current x and y positions
+                self._create_alien(current_x, current_y)
+                current_x += 2 * alien_width
+
+            current_x = alien_width
+            current_y += 2 * alien_height
+
+    def _create_alien(self, x_position, y_position):
+        """Create a new alien and place it in a row"""
+        new_alien = Alien(self)
+        new_alien.x = x_position
+        new_alien.rect.x = x_position
+        new_alien.rect.y = y_position
+        self.aliens.add(new_alien)
+
 
     def _update_screen(self):
         # Redraw the screen during each pass through the loop
