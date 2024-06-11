@@ -1,9 +1,12 @@
 import sys
+from time import sleep
 import pygame
 from settings import Settings
+from game_stats import GameStats
 from ship import Ship
 from bullet import Bullet
 from alien import Alien
+
 class AlienInvasion:
     """Overall Class to manage game assets and behaviour"""
     def __init__(self):
@@ -19,6 +22,11 @@ class AlienInvasion:
         self.screen = pygame.display.set_mode(
             (self.settings.screen_width, self.settings.screen_height))
         pygame.display.set_caption('Alien Invasion')
+
+        # Create instance to store the game statistics
+        # This needs to be after the surface/display settings but before the game elements.
+        self.stats = GameStats(self)
+
         # Instance of ship created from imported Ship module
         # This passes the instance of AlienInvasion (ai) as self to the ship class.
         self.ship = Ship(self)
@@ -125,6 +133,33 @@ class AlienInvasion:
             self.bullets.empty()
             self._create_fleet()
 
+
+
+    # Method coordinates response when a ship hits the mouse
+    def _ship_hit(self):
+        """respond to a ship being hit by an Alien"""
+        # Decrement ships left by 1
+        self.stats.ships_left -= 1
+
+        # Get rid of remaining bullets and aliens
+        self.bullets.empty()
+        self.aliens.empty()
+
+        # Create new fleet
+        self._create_fleet()
+        self.ship.center_ship()
+
+        # Pause - using the newly imported sleep module
+        sleep(0.5)
+
+    def _check_alien_bottom(self):
+        """Check if an alien hits the bottom of the screen"""
+        for alien in self.aliens.sprites():
+            if alien.rect.bottom >= self.settings.screen_height:
+                # The same gode as being hit
+                self._ship_hit()
+                break
+
     def _update_aliens(self):
         """Update position of all Aliens in the fleet"""
         # Check if the fleet is at an edge, then update positions
@@ -136,9 +171,10 @@ class AlienInvasion:
         # spritecollideany() takes 2 arguments, a sprite and a group.
         # It looks for any member of the group that collides with the main sprite
         # This function acts as a loop returning None if ther are no collisions, only
-        # performing an action if there is a collision.
+        # performing an action if there is a collision or alien hits the bottom
         if pygame.sprite.spritecollideany(self.ship, self.aliens):
-            print('Devil mouse has got the Cat!')
+            self._ship_hit()
+        self._check_alien_bottom()
 
     def _create_fleet(self):
         """Make a fleet of aliens from the instance"""

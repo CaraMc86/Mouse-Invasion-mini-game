@@ -11,6 +11,8 @@ class Settings:
         # Ship settings
         # Set the ship to an initial speed of 1.5 pixels, rather than 1 on each pass of hte loop
         self.ship_speed = 1.5
+        # Setting the number of ships/lives available
+        self.ship_limit = 3
 
         # Bullet settings
         # The bullet speed setting allows us to control the bullet speed as the game progresses
