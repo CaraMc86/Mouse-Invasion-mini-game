@@ -36,20 +36,24 @@ class AlienInvasion:
         self.aliens = pygame.sprite.Group()
         # We then the create fleet method.
         self._create_fleet()
+        # Start game in an active state
+        self.game_active = True
 
     def run_game(self):
         """Start the main loop for the game"""
         while True:
             self._check_events()
+            # runs whilst there are lives left
+            if self.game_active:
             # Calls the ship update method from ship.py on each pass of the loop
             # This allows the key right to work
-            self.ship.update()
-            # update the position of hte bullets on each pass of the while loop
-            # When you call update() on a group - as initialized above - the group automatically
-            # calls update() for *each* sprite in the group
-            self._update_bullet()
-            # Call to update alien position in main while loop - after the bullet call to match the order of methods
-            self._update_aliens()
+                self.ship.update()
+                # update the position of hte bullets on each pass of the while loop
+                # When you call update() on a group - as initialized above - the group automatically
+                # calls update() for *each* sprite in the group
+                self._update_bullet()
+                # Call to update alien position in main while loop - after the bullet call to match the order of methods
+                self._update_aliens()
             self._update_screen()
             # Use the clock to ensure the game runs at the same frame rate on all systems.
             # The argument 60 tells pygame to (try to) run the game loop 60 times per second.
@@ -139,18 +143,18 @@ class AlienInvasion:
     def _ship_hit(self):
         """respond to a ship being hit by an Alien"""
         # Decrement ships left by 1
-        self.stats.ships_left -= 1
-
-        # Get rid of remaining bullets and aliens
-        self.bullets.empty()
-        self.aliens.empty()
-
-        # Create new fleet
-        self._create_fleet()
-        self.ship.center_ship()
-
-        # Pause - using the newly imported sleep module
-        sleep(0.5)
+        if self.stats.ships_left > 0:
+            self.stats.ships_left -= 1
+            # Get rid of remaining bullets and aliens
+            self.bullets.empty()
+            self.aliens.empty()
+                # Create new fleet
+            self._create_fleet()
+            self.ship.center_ship()
+            # Pause - using the newly imported sleep module
+            sleep(0.5)
+        else:
+            self.game_active = False
 
     def _check_alien_bottom(self):
         """Check if an alien hits the bottom of the screen"""
