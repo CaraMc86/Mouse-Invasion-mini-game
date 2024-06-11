@@ -132,6 +132,14 @@ class AlienInvasion:
         # Call the update method on the aliens group
         self.aliens.update()
 
+        # Look for mouse/cat collisions
+        # spritecollideany() takes 2 arguments, a sprite and a group.
+        # It looks for any member of the group that collides with the main sprite
+        # This function acts as a loop returning None if ther are no collisions, only
+        # performing an action if there is a collision.
+        if pygame.sprite.spritecollideany(self.ship, self.aliens):
+            print('Devil mouse has got the Cat!')
+
     def _create_fleet(self):
         """Make a fleet of aliens from the instance"""
         # Make one instance of an Alien and add it to the group initialised above until there is no more room left
