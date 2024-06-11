@@ -24,3 +24,7 @@ class Settings:
 
         # Alien settings
         self.alien_speed = 1.0
+        # Setting to control how quickly the fleet drops down
+        self.fleet_drop_speed = 10
+        # Fleet direction - 1 is right, -1 is left to match x-axis coordinate behaviour
+        self.fleet_direction = 1
