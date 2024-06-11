@@ -14,8 +14,8 @@ class Settings:
 
         # Bullet settings
         # The bullet speed setting allows us to control the bullet speed as the game progresses
-        self.bullet_speed = 2.0
-        self.bullet_width = 300
+        self.bullet_speed = 2.5
+        self.bullet_width = 3000
         self.bullet_height = 15
         self.bullet_colour = (255, 175, 204)
         # Storing a number of bullets allowed in settings
