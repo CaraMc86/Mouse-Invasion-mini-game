@@ -7,9 +7,11 @@ class Settings:
         self.screen_width = 1200
         self.screen_height = 800
         self.bg_colour = (162, 210, 255)
+
         # Ship settings
         # Set the ship to an initial speed of 1.5 pixels, rather than 1 on each pass of hte loop
         self.ship_speed = 1.5
+
         # Bullet settings
         # The bullet speed setting allows us to control the bullet speed as the game progresses
         self.bullet_speed = 2.0
@@ -19,3 +21,6 @@ class Settings:
         # Storing a number of bullets allowed in settings
         # This will then be used in the main game
         self.bullets_allowed = 3
+
+        # Alien settings
+        self.alien_speed = 1.0

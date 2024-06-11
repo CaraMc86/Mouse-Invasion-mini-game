@@ -40,6 +40,8 @@ class AlienInvasion:
             # When you call update() on a group - as initialized above - the group automatically
             # calls update() for *each* sprite in the group
             self._update_bullet()
+            # Call to update alien position in main while loop - after the bullet call to match the order of methods
+            self._update_aliens()
             self._update_screen()
             # Use the clock to ensure the game runs at the same frame rate on all systems.
             # The argument 60 tells pygame to (try to) run the game loop 60 times per second.
@@ -104,6 +106,11 @@ class AlienInvasion:
         for bullet in self.bullets.copy():
             if bullet.rect.bottom <= 0:
                 self.bullets.remove(bullet)
+
+    def _update_aliens(self):
+        """Update position of all Aliens in the fleet"""
+        # Call the update method on the aliens group
+        self.aliens.update()
 
     def _create_fleet(self):
         """Make a fleet of aliens from the instance"""
