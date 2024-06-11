@@ -22,7 +22,7 @@ class Alien(Sprite):
     # This is put directly into a return statement rather than use if/else block so it retruns a boolean value
     def check_edges(self):
         """Return True if the alien is at the edge of the screen"""
-        screen_rect = self.screen.get_rect
+        screen_rect = self.screen.get_rect()
         return (self.rect.right >= screen_rect.right) or (self.rect.left <= 0)
 
     # Each time we update the aliens position, move it to the right along the x-axis
@@ -31,6 +31,6 @@ class Alien(Sprite):
         """Move Alien to the right or left"""
         # Track the aliens position with the self.x attribute that can hold float values
         # By multiplying by the fleet direction we can modify whether it is right or left using -1 or 1
-        self.x += self.settings.alien_speed * self.setting.fleet_direction
+        self.x += self.settings.alien_speed * self.settings.fleet_direction
         # Then use the value of self.x to update the position of the aliens rect(angle)
         self.rect.x = self.x
