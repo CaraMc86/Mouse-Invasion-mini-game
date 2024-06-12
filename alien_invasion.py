@@ -90,6 +90,8 @@ class AlienInvasion:
             # Reset the game statistics, settings and set the game to active
             self.settings.initialise_dynamic_settings()
             self.stats.reset_stats()
+            # Resets score bu returning to starting settings
+            self.sb.prep_score()
             self.game_active = True
             # Get rid of remaining bullets and aliens
             self.bullets.empty()
@@ -152,6 +154,12 @@ class AlienInvasion:
         collisions = pygame.sprite.groupcollide(
             self.bullets, self.aliens, True, True
         )
+
+        if collisions:
+            # From the stats class call the score and add the number of hit points from settings
+            self.stats.score += self.settings.alien_points
+            # From scoreboard, call prep score to create a new image for the updated score
+            self.sb.prep_score()
 
         # condition to check if the aliens group is empty.
         # An empty group is False, if it is we empty the bullets and call _create_fleet
@@ -267,7 +275,7 @@ class AlienInvasion:
         # When you call draw on a group, Pygame draws each element based on
         # its position defined by its rect attribute.
         self.aliens.draw(self.screen)
-        # Draw the score infomration - just before we call the draw play button
+        # Draw the score information - just before we call the draw play button
         self.sb.show_score()
         # Draw the play button if the game is inactive
         if not self.game_active:

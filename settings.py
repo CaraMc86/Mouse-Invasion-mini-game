@@ -39,6 +39,9 @@ class Settings:
         # Fleet direction - 1 is right, -1 is left to match x-axis coordinate behaviour
         self.fleet_direction = 1
 
+        # Scoring settings
+        self.alien_points = 50
+
     def increase_speed(self):
         """Increase speed settings"""
         self.ship_speed *= self.speedup_scale
