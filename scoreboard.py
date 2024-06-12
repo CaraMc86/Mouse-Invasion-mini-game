@@ -6,7 +6,7 @@ class Scoreboard:
     def __init__(self, ai_game):
         """Intialie scorekeeping attributes"""
         self.screen = ai_game.screen
-        self.rect = self.screen.get_rect()
+        self.screen_rect = self.screen.get_rect()
         self.settings = ai_game.settings
         self.stats = ai_game.stats
 
@@ -29,7 +29,7 @@ class Scoreboard:
         # Create score_rect and pass it score image to position it
         self.score_rect = self.score_image.get_rect()
         # Set its right edge to 20 pixels from the right edge
-        self.score_image.right = self.screen_rect.right - 20
+        self.score_rect.right = self.screen_rect.right - 20
         # Place the top edge 2 pixels from the top
         self.score_rect.top = 20
 
