@@ -7,6 +7,7 @@ from ship import Ship
 from bullet import Bullet
 from alien import Alien
 from button import Button
+from scoreboard import Scoreboard
 class AlienInvasion:
     """Overall Class to manage game assets and behaviour"""
     def __init__(self):
@@ -27,6 +28,8 @@ class AlienInvasion:
         # This needs to be after the surface/display settings but before the game elements.
         self.stats = GameStats(self)
 
+        # Create instance of Scoreboard to render the stats
+        self.sb = Scoreboard(self)
         # Instance of ship created from imported Ship module
         # This passes the instance of AlienInvasion (ai) as self to the ship class.
         self.ship = Ship(self)
@@ -84,7 +87,8 @@ class AlienInvasion:
         """Start a new game when the play button is clicked"""
         button_clicked = self._play_button.rect.collidepoint(mouse_pos)
         if button_clicked and not self.game_active:
-            # Reset the game statistics and set the game to active
+            # Reset the game statistics, settings and set the game to active
+            self.settings.initialise_dynamic_settings()
             self.stats.reset_stats()
             self.game_active = True
             # Get rid of remaining bullets and aliens
@@ -155,6 +159,7 @@ class AlienInvasion:
             # Destroy existing bullets and create new fleet.
             self.bullets.empty()
             self._create_fleet()
+            self.settings.increase_speed()
 
 
 
@@ -262,6 +267,8 @@ class AlienInvasion:
         # When you call draw on a group, Pygame draws each element based on
         # its position defined by its rect attribute.
         self.aliens.draw(self.screen)
+        # Draw the score infomration - just before we call the draw play button
+        self.sb.show_score()
         # Draw the play button if the game is inactive
         if not self.game_active:
             self._play_button.draw_button()
