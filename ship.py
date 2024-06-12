@@ -1,11 +1,15 @@
 import pygame
+from pygame.sprite import Sprite
 
-class Ship:
+# to display the ships remaining as an image, we need to import Sprite and pass this into the Ship class
+# to ensure the class inherits from Sprite
+class Ship(Sprite):
     """A Class to manage the ship"""
 
     # Initialised with 'self' and ai_game, which names the 'ai' argument passed from AlienInvasion
     def __init__(self, ai_game):
         """Initialise the ship and its starting position"""
+        super().__init__()  # Initialize the Sprite base class
         # Access screen & settings from the AlienInvasion instance passed as 'ai_game'
         self.screen = ai_game.screen
         # Create a settings attribute for Ship() so we can use it in the update() method

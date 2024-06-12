@@ -1,10 +1,14 @@
 import pygame.font
+from pygame.sprite import Group
+from ship import Ship
 
 class Scoreboard:
     """A class to report scoring infomration"""
 
     def __init__(self, ai_game):
         """Intialie scorekeeping attributes"""
+        # We assign the game instance to an attribute, because we'll need to crete some ships
+        self.ai_game = ai_game
         self.screen = ai_game.screen
         self.screen_rect = self.screen.get_rect()
         self.settings = ai_game.settings
@@ -18,6 +22,7 @@ class Scoreboard:
         self.prep_score()
         self.prep_high_score()
         self.prep_level()
+        self.prep_ships()
 
     def prep_level(self):
         """Turn the level into a rendered image"""
@@ -32,6 +37,21 @@ class Scoreboard:
         self.level_rect.right = self.score_rect.right
         # Then to the bottom of the score by 10 pixels
         self.level_rect.top = self.score_rect.bottom + 10
+
+    def prep_ships(self):
+        """Show how many ships are left"""
+        # creates an empty group to hold ship instances
+        self.ships = Group()
+        # The for loop fills the group with the number of ships the player has left
+        for ship_number in range(self.stats.ships_left):
+            # Inside the loop a new ship is created and set to each ship's x-coordinate value
+            # This is so they appear next to each other with a 10 pixel maargin on the left side
+            ship = Ship(self.ai_game)
+            ship.rect.x = 10 + ship_number * ship.rect.width
+            # We set the y value to 10 pixels down from the top of the screen, so is in ine with the other scores
+            ship.rect.y = 10
+            # This line adds the ships to the line-up
+            self.ships.add(ship)
 
     def prep_score(self):
         """Turn the score into a rendered image"""
@@ -72,3 +92,5 @@ class Scoreboard:
         self.screen.blit(self.score_image, self.score_rect)
         self.screen.blit(self.high_score_image, self.high_score_rect)
         self.screen.blit(self.level_image, self.level_rect)
+        # We use draw() in this line as we are displaying ship images, not numbers
+        self.ships.draw(self.screen)
