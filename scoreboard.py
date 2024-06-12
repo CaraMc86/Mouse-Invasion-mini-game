@@ -47,6 +47,7 @@ class Scoreboard:
             # Inside the loop a new ship is created and set to each ship's x-coordinate value
             # This is so they appear next to each other with a 10 pixel maargin on the left side
             ship = Ship(self.ai_game)
+            ship.scale_image(0.5)
             ship.rect.x = 10 + ship_number * ship.rect.width
             # We set the y value to 10 pixels down from the top of the screen, so is in ine with the other scores
             ship.rect.y = 10

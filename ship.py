@@ -34,6 +34,13 @@ class Ship(Sprite):
         self.moving_right = False
         self.moving_left = False
 
+    def scale_image(self, scale_factor):
+        """Scale the ship image to the given scale factor"""
+        width = int(self.image.get_width() * scale_factor)
+        height = int(self.image.get_height() * scale_factor)
+        self.image = pygame.transform.scale(self.image, (width, height))
+        self.rect = self.image.get_rect()
+
     def update(self):
         """Update the ships position base on the movement flag. When we change the ships position in update,
         the value of self.x is adjusted by the amount stored in settings (1.5x here).
