@@ -19,8 +19,11 @@ class Scoreboard:
 
     def prep_score(self):
         """Turn the score into a rendered image"""
-        # Turn stats into a string - calling the variable holding the string score_str
-        score_str = str(self.stats.score)
+        # To round the score to the nearest 10 value we create variable rounded_score
+        # when you pass a negiative argument in round() it will round to the nearest 10,100 etc
+        rounded_score = round(self.stats.score, -1)
+        # This is a specific f string that takes the variable in curly braces and tells it to add a comma
+        score_str = f'{rounded_score:,}'
         # This string is then passed to render() creating the image.
         # We pass the screen background colour and text colour above so we can see the text clearly
         self.score_image = self.font.render(score_str, True,

@@ -157,7 +157,11 @@ class AlienInvasion:
 
         if collisions:
             # From the stats class call the score and add the number of hit points from settings
-            self.stats.score += self.settings.alien_points
+            # Collide.values() is a dictionary method that will add any hits to the collision values dict.
+            # Using a for loop means that on every pass of the main game while loop. if there are more than
+            # one hit per pass, the for loop captures this and records the score
+            for aliens in collisions.values():
+                self.stats.score += self.settings.alien_points * len(aliens)
             # From scoreboard, call prep score to create a new image for the updated score
             self.sb.prep_score()
 
