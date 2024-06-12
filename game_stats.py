@@ -14,5 +14,6 @@ class GameStats:
         self.ships_left = self.settings.ship_limit
         # Score set to 0
         self.score = 0
+        self.level = 1
         # High score - this should never be reset so initilaised in __init__
         self.high_score = 0

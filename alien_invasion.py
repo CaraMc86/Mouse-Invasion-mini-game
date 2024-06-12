@@ -174,6 +174,10 @@ class AlienInvasion:
             self._create_fleet()
             self.settings.increase_speed()
 
+            # Increase level
+            self.stats.level += 1
+            self.sb.prep_level()
+
 
 
     # Method coordinates response when a ship hits the mouse
