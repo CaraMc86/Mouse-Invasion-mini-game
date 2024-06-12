@@ -164,6 +164,7 @@ class AlienInvasion:
                 self.stats.score += self.settings.alien_points * len(aliens)
             # From scoreboard, call prep score to create a new image for the updated score
             self.sb.prep_score()
+            self.sb.check_high_score()
 
         # condition to check if the aliens group is empty.
         # An empty group is False, if it is we empty the bullets and call _create_fleet
